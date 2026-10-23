@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title>VoiceSauce Manual: Parameter Input and Analysis</title>
+  <style type="text/css">
+     body { font: 100%/1.3 Georgia, helvetica, sans-serif; color: black; background-color: white; }
+     h2 { padding: 0.5em; border-color: black; border-style: dotted; border-width: 2px;
+ background-color: white; color: #6699ff; font: 100%/1.3 Georgia; font-weight: bold; text-decoration: underline; }
+     h3 { padding: 0.15em; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; background-color: #99ccff; color: black; }
+     h4 { margin-top: 14px;
+ margin-bottom: 2pt;
+ font-size: 100%; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; }
+     a:hover { background-color: #CCFFFF; text-decoration: underline; }
+  </style>                     
+</head>
+
+<body>
+
+<h2>
+<span style="padding-left:2em">Parameters Measured</span><br>
+<span style="padding-left:4em"><a style="color: #6699ff" href="#f0">F0</a></span><br>
+<span style="padding-left:4em"><a style="color: #6699ff" href="#formants">Formants</a></span><br>
+<span style="padding-left:4em"><a style="color: #6699ff" href="#amplitude">Harmonic and Formant Amplitude</a></span><br>
+<span style="padding-left:4em"><a style="color: #6699ff" href="#corrections">Amplitude Corrections</a></span><br>
+<span style="padding-left:4em"><a style="color: #6699ff" href="#energy">Energy</a></span><br>
+<span style="padding-left:4em"><a style="color: #6699ff" href="#cpp">CPP</a></span><br>
+<span style="padding-left:4em"><a style="color: #6699ff" href="#hnr">Harmonic to Noise Ratio</a></span>
+</h2>
+
+<h3>Parameters Measured</h3>
+
+<p>This section of the manual lists each of the acoustic measurements VoiceSauce is capable of making, and describes how they are made.</p>
+
+<h3><a name="f0"></a>F0</h3>
+
+<p>One of the critical measurements made by VoiceSauce is of the fundamental frequency, f0.  VoiceSauce uses this measurement to estimate the location of harmonics.  VoiceSauce can make measurements of f0 using two different algorithms - Straight (<a href="http://www.shlrc.mq.edu.au/proceedings/icslp98/PDF/SCAN/SL980659.PDF">Kawahara et al. 1998</a>) or the Snack Sound Toolkit (<a href="http://www.speech.kth.se/snack/">Sjölander 2004</a>).  VoiceSauce defaults to the Straight measurements of f0 to locate and measure harmonic amplitudes.  Straight is used to find F0 at one millisecond intervals.</p>
+
+<h3><a name="formants"></a>Formants</h3>
+
+<p>The Snack Sound Toolkit (<a href="http://www.speech.kth.se/snack/">Sjölander 2004</a>) is used to find the frequencies and bandwidths of the first four formants.  By default, VoiceSauce uses the covariance method, a pre-emphasis of 0.96, and a window length of 25 ms with a frame shift of 1 ms.  This frame shift is used to match the f0 estimation by the Straight algorithm.</p>
+
+<h3><a name="amplitude"></a>Harmonic and Formant Amplitude</h3>
+
+<p>The pitch track obtained from the Straight algorithm (<a href="http://www.shlrc.mq.edu.au/proceedings/icslp98/PDF/SCAN/SL980659.PDF">Kawahara et al. 1998</a>) is used to locate the harmonics.  Formant frequencies are obtained from the Snack Sound Toolkit (<a href="http://www.speech.kth.se/snack/">Sjölander 2004</a>).</p> 
+
+<p>In traditional FFT analysis, changing the cutting window can change the features of the extracted spectrum.  VoiceSauce computes harmonic magnitudes pitch-synchronously over a four pitch period window.  This eliminates much of the variability obtained in spectra computed over a fixed time window.  The harmonics are located using standard optimization techniques which locate the maximum of the spectrum around peak locations, as estimated by F0.  This is equivalent to using a very long FFT window.</p>
+
+<p>VoiceSauce measures H1, H2, H4, A1, A2, A3, H1-H2, H2-H4, H1-A1, H1-A2, and H1-A3, as well as corrected versions of all these measures.</p>
+
+<h3><a name="corrections"></a>Amplitude Corrections</h3>
+
+<p>All the voice measurements are corrected for the effect of vowel formants, using an algorithm developed by Iseli & Alwan (<a href="http://diana.icsl.ucla.edu/Tball/publications/iseli04.pdf">2004</a>, <a href="http://www.ee.ucla.edu/~spapl/paper/iseli_icassp06.pdf">2006</a>, <a href="http://www.ee.ucla.edu/~spapl/paper/Iseli_JASA_07.pdf">2007</a>).</p>
+
+<p>Amplitude measures are corrected every frame using the formant frequencies and bandwidths obtained from the Snack toolkit.  For example, for H1*-H2*, F1 and F2 are used in the correction.  For H1*-A3*, F1, F2 and F3 are used.  The measures are then smoothed with a moving average filter with a default length of 20 milliseconds.</p>
+
+<p>In VoiceSauce, all corrected measures are indicated with an asterisk.  For example, H1*-H2* is the corrected form of H1-H2.</p>
+
+<h3><a name="energy"></a>Energy</h3>
+
+<p>Energy refers to the Root Mean Square (RMS) energy, calculated at every frame over a variable window equal to five pitch pulses. The variable window effectively normalizes the energy measure with F0 to reduce the correlation between them.</p>
+
+<h3><a name="cpp"></a>CPP</h3>
+<p>Ceptral peak prominence (CPP) calculations are based on the algorithm described in Hillenbrand et al. (<a href="http://jslhr.highwire.org/cgi/content/abstract/37/4/769">1994</a>). A variable window length equal to 5 pitch periods was used for the calculations. After multiplying the data with a Hamming window, the data is then transformed into the real cepstral domain. The CPP is found by performing a maximum search around the quefrency of the pitch period. This peak is normalized to the linear regression line which is calculated between 1 ms and the maximum quefrency.</p>
+<h3><a name="hnr"></a>Harmonic to Noise Ratio</h3>
+<p>Harmonic-to-noise ratio (HNR) measures are derived from the algorithm in de Krom (<a href="http://jslhr.highwire.org/cgi/content/abstract/36/2/254">1993</a>). Using a variable window length equal to 5 pitch periods, the HNR measurements are found by liftering the pitch component of the cepstrum and comparing the energy of the harmonics with the noise floor. HNR05 measures the HNR between 0-500Hz, HNR15 measures the HNR between 0-1500Hz and HNR25 measures the HNR between 0-2500Hz.</p>
+<h4><a href="contents.html">Back to contents</a></h4>

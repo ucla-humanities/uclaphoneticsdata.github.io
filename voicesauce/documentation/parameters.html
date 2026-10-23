@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>VoiceSauce Manual: Parameter Input and Analysis</title>
+
+<style type="text/css">
+body { font: 100%/1.3 Georgia, helvetica, sans-serif; color: black; background-color: white; }
+h2 { padding: 0.5em; border-color: black; border-style: dotted; border-width: 2px;
+background-color: white; color: #6699ff; font: 100%/1.3 Georgia; font-weight: bold; text-decoration: underline; }
+h3 { padding: 0.15em; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; background-color: #99ccff; color: black; }
+h4 { margin-top: 14px;
+margin-bottom: 2pt;
+font-size: 100%; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; }
+a:hover { background-color: #CCFFFF; text-decoration: underline; }
+</style></head>
+<body>
+<h2 style="height: 215px;">
+<span style="padding-left: 2em;">Parameters Measured</span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#f0">F0</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#formants">Formants</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#amplitude">Harmonic
+and Formant Amplitude</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#corrections">Amplitude
+Corrections</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#energy">Energy</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#cpp">CPP</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#hnr">Harmonic to Noise Ratios</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#shr">Subharmonic to Harmonic Ratio</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#SoE">Strength of Excitation</a></span><br>
+
+</h2><h3>Parameters Measured</h3>
+<p>This section of the manual lists each of the acoustic
+measurements
+VoiceSauce is capable of making, and describes how they are made.</p>
+<h3><a name="f0"></a>F0</h3>
+<p>One of the critical measurements made by VoiceSauce is of the
+fundamental frequency, f0. VoiceSauce uses this measurement to estimate
+the location of harmonics. VoiceSauce can make measurements of F0 using
+four different algorithms - Straight (<a href="http://www.shlrc.mq.edu.au/proceedings/icslp98/PDF/SCAN/SL980659.PDF">Kawahara
+et al. 1998</a>), the Snack Sound Toolkit (<a href="http://www.speech.kth.se/snack/">Sjölander 2004</a>),
+<a href="http://www.fon.hum.uva.nl/praat/">Praat</a>,
+or Sun's Subharmonic-to-Harmonic Ratio method. (In VoiceSauce, these
+are abbreviated strF0, sF0, pF0, shrF0.) VoiceSauce defaults to the
+Straight measurements of F0 to locate and
+measure harmonic amplitudes. Straight is used to find F0 at one
+millisecond intervals. As of version 1.28 (December 23, 2016), the
+Straight algorithm in VoiceSauce is different from in all previous
+versions&nbsp; - it is now Kawahara's "XSX", taken from his new
+TANDEM-Straight package. The new algorithm is implemented here in a way
+that makes its output very similar, but not identical, to results of
+the old algorithm (Muliticue/"NDF"). For technical discussion and
+comparisons of these and other F0 estimators, see <a href="https://arxiv.org/pdf/1605.07809v2.pdf">Kawahara et al. (2016)</a>; <a href="http://dx.doi.org/10.1121/1.4870484">Tsanas et al. (2014)</a>. </p><p>An occasional console message, at least in older versions of VoiceSauce, is <span style="font-family: &quot;Calibri&quot;,&quot;sans-serif&quot;;">
+"Multicue failed: switching to exstraightsource"</span>.
+This somewhat cryptic message is related to the pitch estimators in the
+Straight package. The "Multicue" pitch estimator is quite complicated
+and uses cues from various calculations. However, from experience, we
+have found that it sometimes crashes on certain signals. When this
+happens VoiceSauce will switch to the simpler "extrastraightsource"
+algorithm which is also part of the Straight package. Since the newest
+Straight does not use the Multicue estimator, we expect fewer crashes.</p>
+<h3><a name="formants"></a>Formants</h3>
+<p>The Snack Sound Toolkit (<a href="http://www.speech.kth.se/snack/">Sjölander 2004</a>)
+is used by default to find the frequencies and bandwidths of the first
+four
+formants. By default, VoiceSauce uses the covariance method, a
+pre-emphasis of 0.96, and a window length of 25 ms with a frame shift
+of 1 ms. This frame shift is used to match the f0 estimation by the
+Straight algorithm.</p><p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;">The formant values calculated by the console version of Snack (which is
+used when VoiceSauce is run under Windows) vs. the values calculated when Snack
+is called via the Tcl shell (default for OSX) can differ noticeably (see <a href="https://github.com/voicesauce/opensauce-python/issues/27#issuecomment-316565993">https://github.com/voicesauce/opensauce-python/issues/27#issuecomment-316565993</a>
+for Terri Yu&#8217;s demonstration of some observed differences). This is because the
+options implemented in the console version of Snack appear to be a subset of
+those implemented in the full Snack executable, so the settings are likely to
+be different. As always, inspection of obtained values for obvious errors is
+recommended.<o:p></o:p></p>
+
+<p>Praat can also be used to estimate formant frequencies and
+bandwidths. By default,
+Praat is configured to run with the number of formants set to 4 and the
+maximum formant frequency set to 6000Hz - these settings can be changed
+in the Settings window. As of July 2015, VoiceSauce allows Praat's fractional (x.5) values.&nbsp;</p>
+<h3><a name="amplitude"></a>Harmonic and
+Formant Amplitude</h3>
+<p>By default, the pitch track obtained from the Straight
+algorithm (<a href="http://www.shlrc.mq.edu.au/proceedings/icslp98/PDF/SCAN/SL980659.PDF">Kawahara
+et al. 1998</a>)
+is used to locate the harmonics; any of the other options may be chosen
+instead in the Settings window. By default, formant frequencies are
+obtained from the Snack Sound Toolkit (<a href="http://www.speech.kth.se/snack/">Sjölander 2004</a>),
+but Praat can be specified instead in the Settings window.</p>
+<p>In traditional FFT analysis, changing the cutting window can
+change
+the features of the extracted spectrum. VoiceSauce computes harmonic
+magnitudes pitch-synchronously over a three pitch period window (by
+default; this value can be changed under Settings). This
+eliminates much of the variability obtained in spectra computed over a
+fixed time window. The harmonics are located using standard
+optimization techniques which locate the maximum of the spectrum around
+peak locations, as estimated by F0. This is equivalent to using a very
+long FFT window.</p>
+<p>VoiceSauce measures the amplitudes of various harmonics: H1,
+H2, H4,
+A1 (the harmonic nearest F1), A2, A3, H2K (the harmonic nearest 2000
+Hz), H5K, H1-H2, H2-H4, H1-A1,
+H1-A2, H1-A3, H4-H2K and H2K-H5K, as well as corrected versions of all
+these measures (except for H5k). &nbsp;The individual harmonic
+amplitudes are not normalized, and will vary with, e.g., overall
+loudness. For this reason, the harmonic difference measures like H1-H2
+are more commonly used, as they provide a kind of within-token
+normalization.</p>
+<p>Note
+that the reliability of these measures depends on the successful
+estimation of their component parameters. If the F0 is not
+well-tracked, then all the measures that include H1 (or any other
+harmonic) will be problematic.
+Similarly, if one or more formants are not well-tracked, then
+the corresponding measures will be problematic. Thus if the
+estimate of F1 is wrong, then A1 and H1-A1 will be wrong too, <span style="font-style: italic;">even for the uncorrected measures</span>.
+Errors in F1 estimation are especially likely for breathy, nasal, or
+high-pitched vowels. Obviously, all the amplitude corrections described
+in the next section
+also crucially depend on accurate formant estimation.
+&nbsp;Therefore
+it is
+recommended that the F0 and formant estimates&nbsp; be checked to
+verify the integrity of the voice measures derived from them.&nbsp;</p>
+<p>Note that there are no formant-corrected version of the 5K
+measure.
+This was due to the observation that formant estimation inaccuracies
+increase significantly with the higher formants. Also, the sample rate
+of the input file needs to be higher than 10KHz in order to return a
+meaningful 5K measure.
+</p>
+<h3><a name="corrections"></a>Amplitude
+Corrections</h3>
+<p>All the harmonic-amplitude voice measurements can be corrected for the
+effect
+of formant frequencies, using an algorithm developed by Iseli &amp;
+Alwan (<a href="http://diana.icsl.ucla.edu/Tball/publications/iseli04.pdf">2004</a>,
+<a href="http://www.ee.ucla.edu/%7Espapl/paper/iseli_icassp06.pdf">2006</a>,
+<a href="http://www.ee.ucla.edu/%7Espapl/paper/Iseli_JASA_07.pdf">2007</a>).
+This is done so that voice parameters can be compared across segments
+with different formant frequencies, e.g. different vowel qualities. A
+formant boosts the amplitude of any nearby harmonic(s), so uncorrected
+values of harmonic amplitudes reflect both the source and the filter.
+Uncorrected outputs should be used only when comparing matched speech
+samples for which the filter functions will be essentially the
+same.&nbsp;In some studies, only segments with a very high F1 (e.g. low
+vowels) and relatively low F0 are used, so that the H1 and H2
+frequencies will be well below the F1 frequency and uncorrected H1-H2
+should be unaffected by the formants. Under this method, uncorrected
+parameters based on harmonics above H2 cannot be used, and most vowel
+qualities cannot be studied. The alternative
+of applying the formant corrections allows any mix of segments (or at
+least, any mix of voiced oral sonorants), with any formant frequencies,
+to be
+combined together for comparisons across the full range of harmonic
+amplitude measures. Formant-corrected harmonic-amplitude measures are
+thus especially important when using natural speech samples in which
+segment sets cannot be controlled.</p>
+<p>Amplitude measures are corrected every frame using the formant
+frequencies obtained by default from&nbsp;the Snack toolkit, or
+from
+Praat if specified by the user (under Settings).&nbsp;Formant <span style="font-style: italic;">bandwidths</span>
+are by default calculated by the formula from Hawks &amp; Miller
+(1995).&nbsp;That is,
+the formant bandwidths estimated by Snack and Praat and included in
+VoiceSauce's
+output are <span style="font-style: italic;">not</span>
+used by default in the corrections. Under Settings, the "Bandwidth"
+setting gives the option of switching to the estimated values of the
+formant bandwidths - from either Snack or Praat, whichever is used for
+the formant frequencies. Here is how the various amplitude measures
+are corrected:</p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">H1* - uses F1, F2
+and B1, B2 (from formula, or calculated)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">H2* - uses F1, F2
+and B1, B2 (from formula</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">, or calculated</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">H4* - uses F1, F2
+and B1, B2 (from formula</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">, or calculated</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">H2k* - uses F1,
+F2, F3 and B1, B2, B3 (from formula</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">, or calculated</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">H5k - only
+uncorrected is available<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">A1* - uses F1, F2
+and B1, B2 (from formula</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">, or calculated</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">A2* - uses F1, F2
+and B1, B2 (from formula</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">, or calculated</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">)<o:p></o:p></span></p>
+<p class="MsoNormal"><span style="font-family: &quot;Calibri&quot;,sans-serif;">A3* - uses F1,
+F2, F3 and B1, B2, B3 (from formula</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">, or calculated</span><span style="font-family: &quot;Calibri&quot;,sans-serif;">)<o:p></o:p></span></p>
+<p>The measures are then smoothed with a
+moving average filter with a default length of 20 milliseconds. As
+noted in the previous section, if the estimates of the formant
+frequencies are not accurate, these corrections will be problematic.</p>
+<p>It
+has been noted that formant bandwidths calculated by formula, while
+overall more reliable than using token-specific measurements, can cause
+large errors in corrections of H4 and H2k when these happen to be at a
+formant frequency: the harmonic amplitudes are reduced to too-low
+values. Using measured bandwidths, if those are reasonable, eliminates
+this problem. VoiceSauce was modified in June 2015 to allow such use of
+measured bandwidths, as described above.</p>
+<p>In the literature,&nbsp;corrected measures are indicated
+with an
+asterisk. For example, H1*-H2* is the standard way of indicating the
+corrected form of H1-H2. However, because of limitations imposed by
+Matlab, asterisks cannot be used in VoiceSauce's output. Instead, a "c"
+indicates a corrected measure. Thus, "H1c" is H1*. For clarity, a "u"
+is used for uncorrected measures. Thus, "H1u" is uncorrected
+H1.&nbsp;</p>
+<h3><a name="energy"></a>Energy</h3>
+<p>Energy refers to the Root Mean Square (RMS) energy, calculated
+at
+every frame over a variable window equal to five pitch pulses by
+default. The
+variable window effectively normalizes the energy measure with F0 to
+reduce the correlation between them.</p>
+<h3><a name="cpp"></a>CPP</h3>
+<p>Ceptral peak prominence (CPP) calculations are based on the
+algorithm described in Hillenbrand et al. (<a href="http://jslhr.highwire.org/cgi/content/abstract/37/4/769">1994</a>).
+A variable window length equal to 5 pitch periods is used by default
+for the
+calculations. After multiplying the data with a Hamming window, the
+data is then transformed into the real cepstral domain. The CPP is
+found by performing a maximum search around the quefrency of the pitch
+period. This peak is normalized to the linear regression line which is
+calculated between 1 ms and the maximum quefrency.</p>
+<h3><a name="hnr"></a>Harmonic to Noise Ratio</h3>
+<p>Harmonic-to-noise ratio (HNR) measures are derived from the
+algorithm in de Krom (<a href="http://jslhr.highwire.org/cgi/content/abstract/36/2/254">1993</a>).
+Using a variable window length equal to 5 pitch periods by default, the
+HNR
+measurements are found by liftering the pitch component of the cepstrum
+and comparing the energy of the harmonics with the noise floor. HNR05
+measures the HNR between 0-500Hz, HNR15 measures the HNR between
+0-1500Hz and HNR25 measures the HNR between 0-2500Hz.</p>
+<h3><a name="shr"></a>Subharmonic to Harmonic
+Ratio</h3>
+The Subharmonic-to-harmonic ratio (SHR) measure is derived from the
+algorithm in Sun (2002), quantifying the amplitude ratio between
+subharmonics and harmonics. It therefore characterizes speech with
+alternating pulse cycles (period-doubling).<br>
+<h3><a name="SoE"></a>Strength of Excitation</h3>
+The Strength of Excitation (SoE) measure is derived from the
+algorithm in Murty and Yegnanaraya (2008), "Epoch extraction from
+speech signals", also described in detail by Mittal et al. (2014),
+"Study of the effect of vocal tract constriction on glottal vibration"
+in JASA. &nbsp;Measured at "the instant of significant excitation
+of
+the vocal-tract system during production of speech", it represents "the
+relative amplitude of impulse-like excitation" then. SoE values depend
+on the signal energy, and so should generally be normalized by forming
+a ratio between 2 sounds within an utterance (the sound of interest vs
+a reference). The SoE measure is accompanied by the "Epoch" parameter,
+which indicates where each SoE value comes from in the file (to the
+closest frame, by default 1 msec - not to the sample point as in the
+original algorithm). It is important for these parameters that
+VoiceSauce's frame shift be much shorter than the length of a glottal
+cycle. The default value of 1 msec will usually be fine, but &nbsp;for
+very high F0s the frame shift should be decreased. And, if the frame
+shift has been changed to a higher value, the epochs will not be
+recorded accurately. Note that
+the Epoch parameter is informative only when the output is shown for
+every frame - here a "1" indicates an epoch, and only epochs have SoE
+values. When the value for Epoch is 0, then the value for SoE is also
+0. In contrast, if the output is shown averaged within one or more
+"sub-segments", the
+value(s) for Epoch will be meaningless (the mean of some number of 1s
+and 0s). However, mean values for the SoE parameter are taken only over non-zero
+values, so these means are informative.&nbsp;<br>
+&nbsp;
+<h4><a href="contents.html">Back to contents</a></h4>
+</body></html>

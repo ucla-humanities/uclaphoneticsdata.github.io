@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  
+  <title>VoiceSauce Manual: Parameter Input and Analysis</title><style type="text/css">
+     body { font: 100%/1.3 Georgia, helvetica, sans-serif; color: black; background-color: white; }
+     h2 { padding: 0.5em; border-color: black; border-style: dotted; border-width: 2px;
+ background-color: white; color: #6699ff; font: 100%/1.3 Georgia; font-weight: bold; text-decoration: underline; }
+     h3 { padding: 0.15em; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; background-color: #99ccff; color: black; }
+     h4 { margin-top: 14px;
+ margin-bottom: 2pt;
+ font-size: 100%; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; }
+     a:hover { background-color: #CCFFFF; text-decoration: underline; }
+  </style></head>
+<body>
+
+<h2>
+<span style="padding-left: 2em;">Parameter Input and Analysis</span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#parameterestimation">Parameter Estimation</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#manualinput">Manual Input</a></span>
+</h2>
+
+<h3>Parameter Input and Analysis</h3>
+
+<p>This section of the manual covers the two sections of VoiceSauce involved in inputting and measuring data - <b>Parameter Estimation</b> and <b>Manual Data Input</b>.
+Parameter Estimation is where VoiceSauce is instructed to make various
+acoustic measurements. Manual Input is a section where users can load
+in previously measured data, such as a pitch track calculated using a
+different algorithm, and instruct VoiceSauce to depend on it when
+calculating other measurements. Nearly all users will use Parameter
+Estimation, Manual Input will most frequently be used only to correct
+VoiceSauce.</p>
+
+
+
+<h3><a name="parameterestimation"></a>Parameter Estimation</h3>
+
+<table border="0" width="100%"><tbody><tr><td width="60%">
+
+<p>The <b>Parameter Estimation</b> window is reached by clicking on the appropriate button in the VoiceSauce home screen.</p>
+
+<p>The topmost box displays all the files VoiceSauce has been directed
+to analyze. When the window is first opened, this box will be blank.
+The directory containing the files to be analyzed needs to be loaded
+into VoiceSauce. This can be done by directly typing in the file path
+to the directory in the field marked <b>Input (*wav) directory:</b>, or locating the directory by using the <b>Browse...</b> button.  When a directory is loaded, VoiceSauce will list all the sound files inside in the topmost box.</p><p>
+
+</p><p>Below the input field is a toggle box, <b>Save *.mat files with *.wav files</b>.
+This option is checked by default and will instruct VoiceSauce to save
+the *.mat files, which contain the acoustic measurements, in the same
+place as the sound files. If this option is deselected, the <b>Output (*.mat) directory:</b> field will become active, allowing the user to specify where the result files should be saved.</p></td>
+
+<td align="right"> <img src="paramest.jpg" alt="Parameter Estimation Window"></td></tr></tbody></table><br>
+
+<table border="0" width="100%"><tbody><tr><td width="60%">
+
+<p>Unless instructed otherwise, VoiceSauce will make all possible
+acoustic measurements. To prevent VoiceSauce from making unneeded
+measurements, click the <b>Parameter Selection...</b> button.  This will create a pop-up window listing the various measurement options.  These include:</p>
+
+<ul>
+<li>F0, as measured by the Straight algorithm</li>
+<li>F0, as measured by the Snack algorithm</li><li>F0, as measured by Praat</li><li>F0, as measured by Sun's Subharmonic to harmonic ratio algorithm</li>
+<li>Formant frequencies by Snack and by Praat</li>
+<li>Harmonic amplitudes</li>
+<li>Formant amplitudes</li>
+<li>Corrected relative harmonic amplitudes</li>
+<li>Corrected relative harmonic/formant amplitudes</li>
+<li>RMS energy</li>
+<li>Cepstral Peak Prominence</li>
+<li>Harmonic to noise ratios</li><li>Subharmonic to harmonic ratio</li><li>Strength of Excitation</li>
+</ul>
+
+<p>By default, all possible measures are selected.  Clicking on a measure deselects it, removing it from the analysis.</p><p>It
+is possible to selectively add new parameter values to, or overwrite
+parameter values in, an existing .mat output file. For example, if a
+new version of VoiceSauce contains a new parameter that was not
+available (or for some reason was not selected) when a .mat output file
+was previously produced, selecting only that new parameter now will
+cause the old .mat file to be updated with this new parameter, not
+affecting any previously-calculated, or manually entered, parameters
+(as long as they are de-selected now). As another example, suppose a
+previous .mat output file contains harmonic amplitudes estimated based
+on the STRAIGHT F0, but now you want to replace those based on Praat's
+F0 estimates. Selecting only the harmonic amplitude parameters that you
+want re-estimated (and under Settings, changing the F0 basis) will
+cause VoiceSauce to over-write the old values with the new ones, not
+affecting any other previously-calculated or manually-entered
+parameters (as long as they are de-selected now).</p><p>Multiple
+passes through VoiceSauce, each pass estimating a different set of
+parameters, is also a way to process large files that run up against
+memory limitations. For example, leaving Subharmonic to harmonic ratio
+and Strength of Excitation out of the first pass, and running them
+separately in a second pass, has allowed us to analyze longer files
+than would otherwise be possible.</p></td>
+
+<td align="right"> <img src="selectparam.jpg" alt="Parameter Selection Window"></td></tr></tbody></table><br>
+
+<p>Near the bottom of the Parameter Estimation screen are three additional toggle controls.</p>
+
+<p class="MsoNormal">The first,&nbsp;<b>Process using 16 kHz sampling rate</b>, controls whether
+or not VoiceSauce downsamples an original sound file with a sampling rate
+higher than 16 kHz before doing any analysis. This is recommended for faster
+analysis, especially by STRAIGHT, which increases processing time exponentially with higher sampling rates.
+This box will not affect files with a sampling rate below 16 kHz &#8211; whether the
+box is checked or unchecked, the sampling rate will be unchanged.<span style="font-size: 11pt; font-family: &quot;Calibri&quot;,sans-serif; color: rgb(31, 73, 125);"><o:p></o:p></span></p>
+<p></p>
+
+<p><b>Use .TextGrid segmentation information if available</b> tells
+VoiceSauce to look for labeled Praat Textgrids accompanying the sound
+files. If this is selected, VoiceSauce will only analyze segmented and
+labeled portions of the sound files, which can dramatically reduce
+analysis time, especially for long sound files. By default, VoiceSauce
+will only look in the first tier of a TextGrid and ignore any empty or
+blank space labels. These options can be modified in the <a href="settings.html">Settings</a> section.</p>
+
+<table border="0" width="100%"><tbody><tr><td width="40%">
+
+<p>The last toggle, <b>Show waveform</b> will open a separate pop-up
+window, displaying the waveform of the first sound file in the
+directory. The user may examine the waveforms of additional files by
+selecting them in the Parameter Estimation window.</p>
+
+<p>The Waveform window can be removed by either closing the window or by unchecking the <b>Show Waveform</b> box in the Parameter Estimation window.</p></td>
+
+<td align="right"> <img src="Waveform.jpg" alt="Waveform Display"></td></tr></tbody></table><br>
+
+<table border="0" width="100%"><tbody><tr><td width="60%">
+
+<p>To tell VoiceSauce to begin the analysis, click <b>Start!</b>  A message box will pop-up indicating the progress of the analysis.  This window has two buttons: <b>Stop</b> and <b>Close</b>.  When the analysis begins, the <b>Close</b> button will be grayed out.  At any time, the analysis can be stopped by clicking the <b>Stop</b> button.  Once the analysis is complete, or when it has been stopped, the <b>Close</b> button will become active.  Click it to close the window and return to the Parameter Estimation window.</p></td>
+
+<td align="right"><img src="analyzing.jpg" alt="Analysis Message Box"></td></tr></tbody></table>
+
+
+
+<h3><a name="manualinput"></a>Manual Data Input</h3>
+<h1>Introduction</h1>
+<p>The <strong>manual data input </strong>screen  is accessed by clicking on the appropriate button in the VoiceSauce home  screen. </p>
+<p>The objective of manual data  input is to:</p>
+<ol>
+  <li>Allow the user to overwrite portions of output results
+calculated by VoiceSauce with data generated by an external program or
+by hand.</li>
+  <li>Allow  the user to have access to quick comparisons between VoiceSauce calculations  and external calculations. </li>
+</ol>
+<p>In order to modify VoiceSauce data, parameter estimation must first
+be run to generate a draft version of a .mat file. Overwriting of
+VoiceSauce generated data is achieved by extracting the information
+from an external data file and injecting it into the previously created
+.mat file. After this step occurs, the modified .mat file can then be
+treated like a normal VoiceSauce .mat file. For example, the modified
+file can be:</p>
+<ul>
+  <li>Output to a text  file via <strong>Output to Text</strong>,</li>
+  <li>Output to an EMU  file via <strong>Output to EMU</strong>,</li>
+  <li>Displayed with  the desired parameters via <strong>Parameter Display</strong>, and</li>
+  <li>Most importantly,  reloaded into <strong>Parameter Estimation</strong> and used to recalculate VoiceSauce  measurements</li>
+</ul>
+<p>As an example, previously generated F0 calculations can be modified
+by the user, perhaps through a different algorithm, and reloaded into
+Parameter Estimation. Rerunning the parameter estimations will as a
+result alter the previously calculated harmonic locations, which are
+dependent on F0 estimation.
+</p>
+<p>&nbsp;</p>
+<h1>Inputting Data Manually</h1>
+<p><img src="maninput.jpg" height="526" width="638"></p>
+<p>At the top of the window is  the parameter display box. When the window is first opened, this box will be  empty. </p>
+<p>Modifying a mat file can be  done in four steps: </p>
+<ol>
+  <li><strong>Load wav file</strong> - on the left side of the
+window, users can specify the directories that contain the wav and mat
+files in which to modify. To overwrite VoiceSauce data, the associated
+sound and mat files must first be indicated. This can be done by
+directly typing in the file path to the directory in the field marked <strong>wav  file directory:</strong>, or locating the directory by using the <strong>Browse...</strong>button. When a directory has  been indicated, all the wav files in that directory will be displayed in the  box below.<br>
+    <br>
+  </li>
+  <li><strong>Load mat file</strong>
+- By default, VoiceSauce looks for the original output mat files in the
+same directory as the wav files. If the mat files are stored elsewhere,
+deselect the <strong>mat files are  stored with wav files </strong>toggle. The field below it will activate. Input the  mat file directory by directly typing in the file path in the field marked <strong>mat file directory:</strong>, or locating the  directory by using the <strong>Browse... </strong>button.<br>
+    <br>
+  </li>
+  <li><strong>Load external data file</strong> - after loading the wav and mat  files, the external data to be used can be loaded in the <strong>Data File</strong> field  on the right hand side. As with the wav and mat files, this file path can be  directly typed or selected using the <strong>Browse...</strong> button.
+    <p>The
+file format for the external data file is very simple. This file should
+be a basic text file that includes a column of numbers intended to
+replace the original data. No labels or headings are required. </p>
+Please see the example  below for an example of the text file.<br>
+<br>
+  </li>
+  <li><strong>Selecting the parameters to overwrite</strong> - once the data file has been loaded into VoiceSauce, the user may select  which parameter to overwrite in the <strong>Parameter: </strong>box.<strong> </strong><br>
+    <br>
+When a specific parameter is selected, the original data will be
+displayed in the top box in blue. The new data, from the data file,
+will be displayed in red for comparison.<strong> </strong>This allows the user to  compare data generated by different programs/algorithms quickly. <br>
+  <br>
+  </li>
+  <li><strong>Optional parameters</strong> - there are three  options the user may choose to control how the data file is interpreted and  aligned.
+
+    <ul>
+      <li><strong>Invalid  entry:</strong> tells VoiceSauce  which values to ignore. By default, these are set to <strong>0 </strong>or <strong>NaN.</strong></li>
+      <li><strong>Data  offset:</strong> By default, this  value is set to <strong>0</strong>.
+Any positive value will shift the data file track to the right by that
+amount in milliseconds. A negative value will shift the track to the
+left by that amount in milliseconds. </li>
+      <li><strong>Resample to length:</strong>
+VoiceSauce expects the input data file to have a value at every
+millisecond, but this may not be true for all input files. For example,
+an input pitch track may only have a measurement every five
+milliseconds. In that case, when this option is deselected, the track
+will only apply to the first fifth of the file. When Resample to length
+is selected, VoiceSauce will stretch the track (with interpolation)
+across the length of the sound file.</li>
+    </ul>
+  </li>
+</ol>
+<p>Finally, to overwrite  VoiceSauce output with the input data file, click the <strong>Save to mat file </strong>button.</p>
+<p>&nbsp;</p>
+<h1>Manual Data Entry: An Example</h1>
+<p>This example will demonstrate the process of substituting external
+F0 data for VoiceSauce calculated F0 in a preexisting mat file.</p>
+Here is the text file with the F0 data we wish to use. We called this
+file F0example.txt, and it contains a column of 15 fundamental
+frequency values.
+<p><img src="Manual_Example_01.png" height="497" width="663"></p>
+<ol>
+  <li>First, we need to load the files for the data we wish to
+modify. In this example, our mat file and wav file reside in the same
+location, so we leave <strong>mat files are stored with wav  files</strong> checked. <br>
+    <br>
+By default, VoiceSauce displays the data corresponding to the first
+parameter in the box, in this case, H1. Data calculated by VoiceSauce
+will be shown in blue.<br>
+  <img src="Manual_Example_02.png" height="523" width="628"><br>
+  <br>
+  </li>
+  <li>We
+wish to modify straight F0 data for this mat file, so we select F0 &#8211;
+Straight in the parameter box. Now, the parameter display box will show
+the graph for straight F0, and we can proceed to load the data we wish
+to use as a substitute, located in F0Example.txt.<br>
+    <img src="Manual_Example_03.png" height="523" width="628"><br>
+<br>
+  </li>
+  <li>Notice that our F0 data, shown in red, does not
+match up with VoiceSauce&#8217;s F0 data. This is because each of the 15
+numbers in our example file, by default, corresponds to one millisecond
+in the sound file. There are two ways to fix this, each with different
+intended results: </li>
+  <ul>
+    <li>Perhaps we want the 15 data values to span the length  of the entire sound file. If this is the case, we check the <strong>Resample to length</strong> button and  VoiceSauce will automatically interpolate our data for us. <br>
+    <img src="Manual_Example_04.png" height="523" width="628"><br>
+    <br>
+    </li>
+    <li>Perhaps
+we wish to have exactly 15 milliseconds of F0 calculation in the
+original mat file. In this case, we leave Resample to length unchecked
+and instead change the value in the <strong>Data offset </strong>box.
+Say we only want F0 calculations for milliseconds 440 to 455. Then, we
+type in 440 into the box and VoiceSauce automatically shifts the data
+for us.<br>
+      <img src="Manual_Example_05.png" height="523" width="628"><br>
+      <br>
+    </li>
+  </ul>
+  <li>Lastly,  we click <strong>Save to mat file</strong>
+to replace the original mat file with our new and updated one. Note
+that the original VoiceSauce calculations will be wiped after you click
+save regardless of whether you choose resample to length or data offset.</li>
+</ol>
+<p>&nbsp;</p>
+<p>We  now have an updated version of the mat file that includes our own F0 data. We can  now output this data to text via <strong>Output  to Text</strong>, or rerun <strong>Parameter  Estimation</strong> to re-generate other measurements such as harmonic values based  on the new F0 data. To do the latter, make sure to select <strong><em>only</em></strong> the parameters that  you wish to recalculate!</p>
+<p>&nbsp;</p>
+<h4><a href="contents.html">Back to Contents</a></h4></body></html>

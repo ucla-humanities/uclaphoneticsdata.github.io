@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  
+  <title>VoiceSauce Manual: Data Output</title><style type="text/css">
+     body { font: 100%/1.3 Georgia, helvetica, sans-serif; color: black; background-color: white; }
+     h2 { padding: 0.5em; border-color: black; border-style: dotted; border-width: 2px;
+ background-color: white; color: #6699ff; font: 100%/1.3 Georgia; font-weight: bold; text-decoration: underline; }
+     h3 { padding: 0.15em; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; background-color: #99ccff; color: black; }
+     h4 { margin-top: 14px;
+ margin-bottom: 2pt;
+ font-size: 100%; padding-left: 1em; border-color: black; border-style: solid; border-width: 2px; }
+     a:hover { background-color: #CCFFFF; text-decoration: underline; }
+  </style></head>
+<body>
+
+<h2>
+<span style="padding-left: 2em;">Data Output</span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#display">Parameter Display</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#totext">Output to Text</a></span><br>
+<span style="padding-left: 4em;"><a style="color: rgb(102, 153, 255);" href="#toemu">Output to EMU</a></span>
+</h2>
+
+<h3>Data Output</h3>
+
+<p>This section of the manual covers the three sections of VoiceSauce concerning data display and output - <b>Parameter Display</b>, <b>Output to Text</b> and <b>Output to EMU</b>.
+Parameter display allows the user to visually examine measured data for
+a single file at a time. Output to Text converts the measured data into
+a delimited text file, which can then be imported into spreadsheet
+manipulation software, such as MS Excel, for analysis. Output to EMU
+converts the measured data into a format that can be read by the EMU
+database program.</p>
+
+
+
+<h3><a name="display"></a>Parameter Display</h3>
+
+<table border="0" width="100%"><tbody><tr><td width="40%">
+
+<p>The <b>Parameter Display</b> window is reached by clicking on the appropriate button in the VoiceSauce home screen.</p>
+
+<p>This window has three main parts - a large display window on the
+left, data input fields in the upper right, and the parameter list in
+the lower right.</p>
+
+<p>If data has been analyzed using the <a href="analysis.html#parameterestimation">Parameter Estimation</a>
+section of VoiceSauce in the current session, the Parameter Display
+will open with this data pre-loaded. Otherwise, the display window will
+be blank. To load data, type the file path of the sound file directory
+in the field below <b>.wav directory:</b> or locate the directory by clicking the <b>Browse...</b>
+button. All sounds files in the specified directory will be listed in
+the box below the input field, and the waveform of the first sound file
+will display. By default, VoiceSauce will search for the .mat files
+containing the measured data in the same directory as the sound files.
+To specify a different directory, type the file path of the .mat file
+directory in the field below <b>.mat directory</b> or locate it by clicking the <b>Browse...</b> button.</p>
+
+<p>To view the measured data plotted on the same timescale as the waveform, select a parameter in the <b>Parameter list:</b>.
+Selecting a parameter will modify the display by reducing the size of
+the waveform and adding plot of the selected parameter below it. Many
+parameters can be displayed at once, but there can be only one y-axis.
+Therefore, if both F2, the frequency of the second formant, and
+H1*-H2*, the relative difference in amplitude of the first two
+harmonics, are selected, the plot will appear to be dominated by F2, as
+it is measured on a scale that varies between 1500 and 2500. H1*-H2*
+will be squished to the bottom because it is measured on a scale of
+around -10 to 10.</p>
+
+<p>To close the Parameter Display window, click the <b>OK</b> button.</p></td>
+
+<td align="right"> <img src="paramdisplay.jpg" alt="Parameter Display Window"></td></tr></tbody></table><br>
+
+
+
+<h3><a name="totext"></a>Output to Text</h3>
+
+<table border="0" width="100%"><tbody><tr><td width="45%">
+
+<p>The <b>Output to Text</b> window is reached by clicking the appropriate button in the VoiceSauce home screen.</p>
+
+<p>This window has two main sections - <b>Parameters and Settings</b> and <b>Output Options</b>.  The first section contains all the options controlling the location of and which data to output.</p>
+
+<p>If data has been analyzed using the <a href="analysis.html#parameterestimation">Parameter Estimation</a>
+section of VoiceSauce in the current session, the Output to Text window
+will open with this data pre-loaded. Otherwise, the input directories
+will be blank. Measured data must be loaded into VoiceSauce before it
+can be converted to txt format. Type in the file path to the directory
+containing the .mat data files in the field to the right of <b>Input .mat directory:</b> or locate it by clicking on the <b>Browse...</b> button.  Once the directory is loaded, all .mat files will be listed in the <b>.mat files:</b> box.  VoiceSauce can also be instructed to look inside any subdirectories that may exist in the load directory by checking the <b>Include subdirectories</b> toggle.</p>
+
+<p>If sound files were analyzed using Praat TextGrid labeled segments,
+those files must also be loaded. When a .mat file directory is input,
+VoiceSauce automatically suggests this same directory as the directory
+containing the TextGrid files. If this is not the case, a separate
+directory must be input. Type in the file path to the directory
+containing the .TextGrid files in the field to the right of <b>Input .TextGrid directory:</b> or locate it by clicking on the <b>Browse...</b> button.</p><p class="MsoNormal" style="margin-bottom: 0.0001pt; line-height: normal;">Note that individual data points that happen to fall at the edge of a
+TextGrid interval, where the label switches, are included in BOTH of the
+adjacent TextGrid intervals. The data point is calculated twice, once with each
+of the 2 labels.<o:p></o:p></p>
+
+
+<p>VoiceSauce can combine its measurements with Electroglottographic
+(EGG) data, if such recordings were made when the sound files were
+recorded, and if the signals were analyzed (outside VoiceSauce) using
+EggWorks. To instruct VoiceSauce to use the data from EggWorks's output
+.egg files, check the <b>Include EGG data</b> toggle and input the file path to the directory containing the EGG data in the <b>EGG data directory:</b> field. EggWorks output files can be from either the older standalone-EggWorks, or the newer AppsoBabble web version.
+
+</p><p>VoiceSauce must be instructed where to save the resulting txt
+files. Type in the file path to the directory where the output .txt
+files should be stored in the field to the right of <b>Output .txt directory:</b> or locate it by clicking on the <b>Browse...</b> button.</p>
+
+<p>The final options in the center of the Parameters and Settings section affect the format of the final files.  The <b>Include TextGrid labels</b>
+toggle controls whether or not the TextGrid label names will appear in
+the output txt files. (The separate <a href="http://www.phonetics.ucla.edu/voicesauce/documentation/settings.html">Settings</a>
+window lets the user specify TextGrid labels which should be ignored in
+the output - omitting labeled intervals which aren't needed, such as
+silent pauses, can greatly speed up processing.) The txt files will be
+formatted into rows and
+columns. <b>Column delimiter:</b> controls how the columns are separated.  The default option is <b>tab</b>, but it may be set to <b>comma</b> or <b>space</b> instead. The <span style="font-weight: bold;">Include algorithm metadata in output</span> toggle gives the option of including information about which algorithms/settings were used in the various calculations.</p></td>
+
+<td align="right"> <img src="outtext.jpg" alt="Output to Text Window"></td></tr></tbody></table><br>
+
+<p>The subsection <b>Segments</b> controls whether all the data is output or whether the data is averaged together into chunks.  <b>No segments</b>
+writes out all data, one measurement per interval specified by the
+Frame Shift parameter (which can be changed under Settings). If this
+option is selected, the output txt file will place each measurement on
+a separate row. For example, if a sound file segment is 100 ms long and
+the Frame Shift has been left at 1 ms, it will have 100 rows of
+corresponding data, but if the Frame Shift has been changed to 10 ms,
+then it will have 10 rows of corresponding data. Each measurement type,
+e.g. - F0, H1, etc., will be written in a separate column. <b>Use sub-segments</b>
+will average the data together into a number of chunks. Each sound file
+segment will be written to a single row, and each measurement type will
+be written in a separate column, but repeated for the number of
+sub-segments. <b>No. of sub-segments:</b> controls the number of
+chunks a sound file segment will be divided into. The No Segments
+option creates txt files that are very long; the Use Sub-Segments
+option creates txt files that are very wide.</p>
+
+<p>Finally, the user must select which parameters to write to txt file.  This is done in the <b>Parameters:</b> box to left of the window.  This box lists all possible parameters.  As the user clicks additional parameters, the <b>No. of parameters selected:</b> counter will increase.</p>
+
+<p>The Output Options section controls the number of files that will be created.  Users may select to write all data to a <b>Single file</b> or to <b>Multiple files</b>.  If a single file is selected, users may enter the file path of the resulting txt file in the field below <b>Output file:</b> or locate it by selecting the <b>Browse...</b> button.</p>
+
+<p>If multiple files are selected, users may enter the file path of each of the resulting txt file in the fields below <b>Output files:</b> or locate them by selecting the <b>Browse...</b> buttons.  VoiceSauce organizes the data into groups:
+</p><ul>
+<li><b>F0/CPP/E/HNR:</b> - which contains all pitch and energy measures.</li>
+<li><b>Formants:</b> - which contains all formant frequency and bandwidth measures.</li>
+<li><b>Hx/Ax:</b> - which contains all harmonic and formant amplitude measures.</li>
+<li><b>Hx-Hx:</b> - which contains all relative harmonic measures.</li>
+<li><b>Hx-Ax:</b> - which contains all relative harmonic/frequency amplitude measures.</li>
+<li><b>EGG:</b> - which contains all EGG data.</li>
+</ul><p>Newer parameters may not have been assigned to any of these, and may be available only by the <span style="font-weight: bold;">Single file</span> option.</p>
+
+<p>To tell VoiceSauce to begin the writing process, click <b>Start!</b>  A message box will pop-up indicating the progress of the write.  This window has two buttons: <b>Stop</b> and <b>Close</b>.  When the write begins, the <b>Close</b> button will be grayed out.  At any time, the write process can be stopped by clicking the <b>Stop</b> button.  Once the write process is complete, or when it has been stopped, the <b>Close</b> button will become active.  Click it to close the window and return to the Output to Text window.</p>
+
+
+<h3><a name="toemu"></a>Output to EMU</h3>
+
+<table border="0" width="100%"><tbody><tr><td width="65%">
+
+<p>The <b>Output to EMU</b> window is reached by clicking the
+appropriate button in the VoiceSauce home screen. This section of
+VoiceSauce functions like a simplified version of Output to Text. Users
+must direct VoiceSauce to the measured data that is to be converted
+into a format readable by EMU and select which measured parameters to
+write, but there are no options controlling TextGrid labels or dividing
+data into sub-sections.</p>
+
+<p>If data has been analyzed using the <a href="analysis.html#parameterestimation">Parameter Estimation</a>
+section of VoiceSauce in the current session, the Output to EMU window
+will open with this data pre-loaded. Otherwise, the input directory
+will be blank. Measured data must be loaded into VoiceSauce before it
+can be converted to EMU format. Type in the file path to the directory
+containing the .mat data files in the field below <b>mat directory:</b> or locate it by clicking on the <b>Browse...</b> button.  Once the directory is loaded, all .mat files will be listed in the <b>.mat files:</b> box.</p>
+
+<p>Users may select which parameters will be written to EMU-readable format in the <b>Parameters:</b> box on the right of the screen.</p>
+
+<p>By default, VoiceSauce saves the resulting EMU-readable files in the
+same directory as the .mat files. To change this, de-select <b>Save output with mat files</b> and enter the output directory in the field below <b>Output EMU directory:</b> or locate it by clicking on the <b>Browse...</b> button.</p>
+
+<p>To tell VoiceSauce to begin the writing process, click <b>Start!</b>  A message box will pop-up indicating the progress of the write.  This window has two buttons: <b>Stop</b> and <b>Close</b>.  When the write begins, the <b>Close</b> button will be grayed out.  At any time, the write process can be stopped by clicking the <b>Stop</b> button.  Once the write process is complete, or when it has been stopped, the <b>Close</b> button will become active.  Click it to close the window and return to the Output to EMU window.</p></td>
+
+<td align="right"> <img src="outemu.jpg" alt="Output to EMU Window"></td></tr></tbody></table><br>
+
+<h4><a href="contents.html">Back to contents</a></h4></body></html>
